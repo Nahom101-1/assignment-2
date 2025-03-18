@@ -17,7 +17,6 @@ assignment-2/
 │   ├── services/          # logic endpoints, getcities, getpopulation etc..
 │── tests/                 # Unit tests
 │── utils/                 # Utility functions
-│   ├── utils_test/        # Tests for utility functions
 │   ├── check_status.go    # Status check utility
 │   ├── get_request.go     # Helper for GET requests
 │   ├── handle_ServiceError.go # Error handling utilities
