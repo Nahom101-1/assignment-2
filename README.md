@@ -7,7 +7,7 @@
   
   Tim:  legg til egen github
 
-  Eirik : legg til egen github
+  Eirik : https://github.com/eirikm02
 ## Project Structure
  initial setup of our Go project. Below is an overview of the current folder structure:
 
