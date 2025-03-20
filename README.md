@@ -4,8 +4,10 @@
   Nahom : https://github.com/Nahom101-1
 
   Fredrik: https://github.com/fredrikandreas
-
+  
   Tim:  legg til egen github
+
+  Eirik : legg til egen github
 ## Project Structure
  initial setup of our Go project. Below is an overview of the current folder structure:
 
