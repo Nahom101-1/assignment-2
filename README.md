@@ -25,6 +25,7 @@ assignment-2/
 │   ├── post_request.go    # Helper for POST requests
 │   ├── read_body.go       # Reads request bodies
 │   ├── server_port.go     # Handles server port configuration
+│   ├── response.go        # Handles writing to the browser
 │── go.mod                 # Go module dependencies
 │── main.go                # Entry point of the application
 │── README.md              # Project documentation
