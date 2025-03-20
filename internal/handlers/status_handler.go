@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"fmt"
+	"assignment-2/utils"
 	"net/http"
 )
 
 func StatusHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("status handler")
+	utils.JsonResponse(w, "status handler")
 }

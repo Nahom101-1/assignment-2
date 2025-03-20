@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"fmt"
+	"assignment-2/utils"
 	"net/http"
 )
 
 func DashboardHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("dashboard handler")
+	utils.JsonResponse(w, "dashboard handler")
 }

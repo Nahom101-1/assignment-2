@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"fmt"
+	"assignment-2/utils"
 	"net/http"
 )
 
 func RegistrationHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("registration handler")
+	utils.JsonResponse(w, "registration handler")
 }
