@@ -2,6 +2,7 @@ package main
 
 import (
 	"assignment-2/internal/handlers"
+	"assignment-2/utils"
 	"fmt"
 	"log"
 	"net/http"
@@ -19,6 +20,6 @@ func main() {
 	http.HandleFunc(notificationEndpoint, handlers.NotificationHandler)
 	http.HandleFunc(statusEndpoint, handlers.StatusHandler)
 
-	fmt.Println("Server running on port 8080...")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("Server running on port", utils.GetPort(), "...")
+	log.Fatal(http.ListenAndServe(":"+utils.GetPort(), nil))
 }

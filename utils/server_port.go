@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"log"
 	"os"
 )
 
@@ -11,7 +10,6 @@ func GetPort() string {
 	port := os.Getenv("PORT")
 	if port == "" {
 		//If failed to get port set port 8080 as default
-		log.Println("$PORT not set, using default port 8080")
 		port = "8080"
 	}
 	return port
