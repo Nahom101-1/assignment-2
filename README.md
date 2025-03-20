@@ -3,7 +3,7 @@
 # group members 
   Nahom : https://github.com/Nahom101-1
 
-  Fredrik: legg til egen github
+  Fredrik: https://github.com/fredrikandreas
 
   Tim:  legg til egen github
 ## Project Structure
