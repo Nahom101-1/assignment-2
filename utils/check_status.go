@@ -15,7 +15,10 @@ func CheckAPIStatus(url string) int {
 		return http.StatusServiceUnavailable
 	}
 	// close body
-	res.Body.Close()
+	err = res.Body.Close()
+	if err != nil {
+		return 0
+	}
 	// return status code if service works/up
 	return res.StatusCode
 }

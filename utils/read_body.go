@@ -15,7 +15,11 @@ func ReadResponseBody(response *http.Response) ([]byte, error) {
 		return nil, errors.New("nil response body")
 	}
 	// Close response body after reading
-	defer response.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+		}
+	}(response.Body)
 
 	// Read the entire response body.
 	body, err := io.ReadAll(response.Body)
