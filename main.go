@@ -13,6 +13,7 @@ const notificationEndpoint = "/dashboard/v1/notifications/"
 const statusEndpoint = "/dashboard/v1/status/"
 
 func main() {
+	http.HandleFunc("/", handlers.LocalHandler)
 	http.HandleFunc(registrationEndpoint, handlers.RegistrationHandler)
 	http.HandleFunc(dashboardEndpoint, handlers.DashboardHandler)
 	http.HandleFunc(notificationEndpoint, handlers.NotificationHandler)
