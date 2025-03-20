@@ -46,3 +46,23 @@ assignment-2/
    ```sh
    go run main.go
    ```
+
+## Features & Endpoints
+1. Dashboard Registrations (/dashboard/v1/registrations/)
+- Register a dashboard configuration (POST)
+- Retrieve a specific dashboard configuration (GET)
+- Retrieve all dashboard configurations (GET)
+- Update a dashboard configuration (PUT)
+- Delete a dashboard configuration (DELETE)
+
+2. Dashboard Retrieval (/dashboard/v1/dashboards/)
+- Retrieve a populated dashboard (GET)
+
+3. Webhook Notifications (/dashboard/v1/notifications/)
+- Register a webhook (POST)
+- Retrieve a specific webhook (GET)
+- Retrieve all webhooks (GET)
+- Delete a webhook (DELETE)
+
+4. Service Status (/dashboard/v1/status/)
+- Monitor availability of external APIs and system health (GET)
