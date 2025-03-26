@@ -1,14 +1,15 @@
 # Assignment-2 Project Setup
 
-# group members 
-  Nahom : https://github.com/Nahom101-1
+## 👥 Group Members
 
-  Fredrik: https://github.com/fredrikandreas
-  
-  Tim:  legg til egen github
+- **Nahom**: [github.com/Nahom101-1](https://github.com/Nahom101-1)
+- **Fredrik**: [github.com/fredrikandreas](https://github.com/fredrikandreas)
+- **Tim**: _(add your GitHub link here)_
+- **Eirik**: [github.com/eirikm02](https://github.com/eirikm02)
 
-  Eirik : https://github.com/eirikm02
-## Project Structure
+---
+
+## 📁 Project Structure
  initial setup of our Go project. Below is an overview of the current folder structure:
 
 ```
@@ -18,6 +19,8 @@ assignment-2/
 │   ├── models/            # Data/struct models
 │   ├── services/          # logic endpoints, getcities, getpopulation etc..
 │── tests/                 # Unit tests
+│── config/
+├   ├── firebase.json
 │── utils/                 # Utility functions
 │   ├── check_status.go    # Status check utility
 │   ├── get_request.go     # Helper for GET requests
@@ -30,6 +33,12 @@ assignment-2/
 │── main.go                # Entry point of the application
 │── README.md              # Project documentation
 ```
+
+## 🧪 Firebase Setup (Local Development)
+
+1. Ask a team member for `firebase.json` file.
+2. Save it in the `config/` folder:
+3. Ensure `.gitignore` includes: `.gitignore` and `config/firebase.json`
 
 ## How to get started Project
 1. Clone the repository:
