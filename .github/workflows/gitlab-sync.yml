@@ -6,20 +6,24 @@ on:
       - main
 
 jobs:
-  sync-to-gitlab:
+  mirror-to-gitlab:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code from GitHub
+      - name: Checkout full Git history
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Push to GitLab mirror
+      - name: Configure Git
         run: |
           git config --global user.name "${{ secrets.GITLAB_USERNAME }}"
           git config --global user.email "${{ secrets.GITLAB_USERNAME }}@stud.ntnu.no"
 
-          git remote add gitlab https://oauth2:${{ secrets.GITLAB_TOKEN }}@git.gvk.idi.ntnu.no/course/prog2005/prog2005-2025-workspace/nahomba/assignment1.git
+      - name: Add GitLab remote
+        run: |
+          git remote add gitlab https://oauth2:${{ secrets.GITLAB_TOKEN }}@git.gvk.idi.ntnu.no/course/prog2005/prog2005-2025-workspace/nahomba/assignment-2.git
 
+      - name: Push to GitLab
+        run: |
           git push --force gitlab HEAD:main
