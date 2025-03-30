@@ -1,4 +1,4 @@
-# Binaries
+# Go binaries and test output
 *.exe
 *.out
 *.test
@@ -8,3 +8,7 @@
 
 # Firebase credentials
 config/firebase.json
+
+# IntelliJ / GoLand project files
+.idea/
+*.iml
