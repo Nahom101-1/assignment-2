@@ -1,0 +1,10 @@
+# Binaries
+*.exe
+*.out
+*.test
+
+# Environment files
+.env
+
+# Firebase credentials
+config/firebase.json
