@@ -34,11 +34,6 @@ assignment-2/
 │── README.md              # Project documentation
 ```
 
-## 🧪 Firebase Setup (Local Development)
-
-1. Ask a team member for `firebase.json` file.
-2. Save it in the `config/` folder:
-3. Ensure `.gitignore` includes: `.gitignore` and `config/firebase.json`
 
 ## How to get started Project
 1. Clone the repository:
