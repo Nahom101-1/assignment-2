@@ -20,6 +20,6 @@ type DashboardConfig struct {
 
 // ResponseID struct for registration
 type ResponseID struct {
-	Id         string `json:"id"`
+	ID         string `json:"id"`
 	LastChange string `json:"lastChange"`
 }
