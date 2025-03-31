@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"assignment-2/utils"
+	"github.com/Nahom101-1/assignment-2/utils"
 	"net/http"
 )
 

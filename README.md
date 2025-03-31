@@ -49,7 +49,7 @@ assignment-2/
 
 3. Run the server:
    ```sh
-   go run main.go
+   go run ./cmd/server
    ```
 
 ## Features & Endpoints
