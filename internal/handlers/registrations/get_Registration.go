@@ -17,6 +17,7 @@ import (
 // HandleGetRegistration gets a collection doc given ID
 func HandleGetRegistration(w http.ResponseWriter, r *http.Request) {
 	log.Printf("GET /registrations received: %s %s\n", r.Method, r.URL.Path)
+	// Extract the ID from the URL
 	path := strings.TrimPrefix(r.URL.Path, constants.RegistrationsEndpoint)
 	id := strings.TrimSuffix(path, "/")
 	log.Printf("ID: %s", id)

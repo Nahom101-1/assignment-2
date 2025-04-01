@@ -20,7 +20,7 @@ func HandleHeadRegistrations(w http.ResponseWriter, r *http.Request) {
 	id := strings.TrimSuffix(path, "/")
 	log.Printf("ID: %s", id)
 
-	// If id not specified return 404
+	// If id not specified return 400
 	if id == "" {
 		http.Error(w, `{"error": "Missing registration ID in URL"}`, http.StatusBadRequest)
 		/*		utils.JsonResponse(w, "Error invalid-id cant return head")

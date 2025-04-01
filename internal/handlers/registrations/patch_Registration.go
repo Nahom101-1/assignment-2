@@ -20,6 +20,7 @@ func HandlePatchRegistration(w http.ResponseWriter, r *http.Request) {
 	id := strings.TrimSuffix(path, "/")
 	log.Printf("ID: %s", id)
 
+	// no id proved return 400
 	if id == "" {
 		http.Error(w, `{"error": "Missing registration ID in URL"}`, http.StatusBadRequest)
 		return
