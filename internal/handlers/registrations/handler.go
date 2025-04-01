@@ -26,8 +26,15 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		HandleDeleteRegistration(w, r)
 	default:
 		http.Error(w,
-			fmt.Sprintf(`{"error": "REST Method '%s' not supported. Supported methods: '%s',"}`,
-				r.Method, http.MethodGet),
+			fmt.Sprintf(`{"error": "REST Method '%s' not supported. Supported methods: '%s', '%s', '%s', '%s', '%s', '%s'"}`,
+				r.Method,
+				http.MethodPost,
+				http.MethodGet,
+				http.MethodHead,
+				http.MethodPut,
+				http.MethodPatch,
+				http.MethodDelete,
+			),
 			http.StatusMethodNotAllowed)
 	}
 }
