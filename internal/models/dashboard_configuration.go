@@ -23,3 +23,9 @@ type ResponseID struct {
 	ID         string `json:"id"`
 	LastChange string `json:"lastChange"`
 }
+
+type DashboardConfigWithMeta struct {
+	ID string `json:"id"`
+	DashboardConfig
+	LastChange string `json:"lastChange"`
+}
