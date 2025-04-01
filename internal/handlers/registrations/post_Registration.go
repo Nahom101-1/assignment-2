@@ -9,11 +9,11 @@ import (
 	"net/http"
 )
 
-const Collection = "registrations"
-
+// HandlePostRegistration Takes json body and stores data on firestore
 func HandlePostRegistration(w http.ResponseWriter, r *http.Request) {
 	log.Printf("POST /registrations received: %s %s\n", r.Method, r.URL.Path)
 
+	// Decode the JSON request body into the go struct
 	var config models.DashboardConfig
 	err := json.NewDecoder(r.Body).Decode(&config)
 	if err != nil {
@@ -25,7 +25,7 @@ func HandlePostRegistration(w http.ResponseWriter, r *http.Request) {
 	id := utils.GenerateID()
 	timestamp := utils.GetTimestamp()
 
-	// Firebase data
+	// Prepare the data to store in Firestore
 	storedData := map[string]interface{}{
 		"country":    config.Country,
 		"isoCode":    config.IsoCode,
@@ -33,20 +33,21 @@ func HandlePostRegistration(w http.ResponseWriter, r *http.Request) {
 		"lastChange": timestamp,
 	}
 
+	// Store the data in the Firestore "registrations" collection using the generated ID
 	if _, err := storage.GetClient().Collection(Collection).Doc(id).Set(r.Context(), storedData); err != nil {
 		utils.HandleServiceError(w, err, "Error storing registration in Firestore", http.StatusInternalServerError)
 		return
 	}
 
-	// Prepare Response
+	// Prepare Response with id and timestamp
 	resp := models.ResponseID{
 		ID:         id,
 		LastChange: timestamp,
 	}
 
-	log.Printf("Registration stored: ID=%s LastChange=%s\n", id, timestamp)
+	/*log.Printf("Registration stored: ID=%s LastChange=%s\n", id, timestamp)*/
 
-	// Encode and send the JSON response and set header
+	// Send the response with HTTP 201 Created and JSON body
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	if err := json.NewEncoder(w).Encode(resp); err != nil {
