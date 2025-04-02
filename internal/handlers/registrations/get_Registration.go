@@ -29,6 +29,8 @@ func HandleGetRegistration(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get doc with specified id from firestore
+	// TODO : use GetDocIfExists and clean up here :
+	/*doc, err := utils.GetDocIfExists(r.Context(),Collection)*/
 	doc, err := storage.GetClient().Collection(Collection).Doc(id).Get(r.Context())
 	if err != nil {
 		if status.Code(err) == codes.NotFound {
