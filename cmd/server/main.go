@@ -26,8 +26,8 @@ func main() {
 	http.HandleFunc(constants.BasePath, handlers.LocalHandler)
 	http.HandleFunc(constants.RegistrationsEndpoint, registrations.Handler)
 	http.HandleFunc(constants.DashboardsEndpoint, dashboard.Handler)
-	/*		http.HandleFunc(notificationEndpoint, handlers.NotificationHandler)
-			http.HandleFunc(statusEndpoint, handlers.StatusHandler)*/
+	/*http.HandleFunc(notificationEndpoint, handlers.NotificationHandler)*/
+	http.HandleFunc(constants.StatusEndpoint, handlers.StatusHandler)
 
 	fmt.Println("Server running on port", utils.GetPort(), "...")
 	log.Fatal(http.ListenAndServe(":"+port, nil))
