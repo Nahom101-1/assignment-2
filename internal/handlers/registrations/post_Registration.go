@@ -15,12 +15,10 @@ func HandlePostRegistration(w http.ResponseWriter, r *http.Request) {
 
 	// Decode the JSON request body into the go struct
 	var config models.DashboardConfig
-	err := json.NewDecoder(r.Body).Decode(&config)
-	if err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&config); err != nil {
 		utils.HandleServiceError(w, err, "(HandlePostRegistration(registration)) Error decoding JSOn", http.StatusInternalServerError)
 		return
 	}
-
 	// Generate ID and timestamp
 	id := utils.GenerateID()
 	timestamp := utils.GetTimestamp()

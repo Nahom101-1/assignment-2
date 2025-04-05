@@ -42,6 +42,19 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 	}
 	// TODO: configure the dashbaord and populate the struct before returning it
 	/*	var populatedDashboard interface{}*/
+	/*	type Features struct {
+			Temperature      bool    if Temperature == true {
+			service.getTemp
+		}     // Indicates whether temperature in degree Celsius is shown
+			Precipitation    bool    if Precipitation == true  {
+			service.getTemp()
+		}   // Indicates whether precipitation (rain, showers and snow) is shown
+			Capital          bool     `json:"capital"`          // Indicates whether the name of the capital is shown
+			Coordinates      bool     `json:"coordinates"`      // Indicates whether country coordinates are shown
+			Population       bool     `json:"population"`       // Indicates whether population is shown
+			Area             bool     `json:"area"`             // Indicates whether land area size is shown
+			TargetCurrencies []string `json:"targetCurrencies"` // Indicates which exchange rates (to target currencies) relative to the base currency of the registered country (in this case NOK for Norway) are shown
+		}*/
 
 	// Return the registration as JSON
 	w.Header().Set("Content-Type", "application/json")
