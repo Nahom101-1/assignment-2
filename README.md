@@ -4,7 +4,7 @@
 
 - **Nahom**: [github.com/Nahom101-1](https://github.com/Nahom101-1)
 - **Fredrik**: [github.com/fredrikandreas](https://github.com/fredrikandreas)
-- **Tim**: _(add your GitHub link here)_
+- **Tim**:  [github.com/TimHarseth](https://github.com/TimHarseth)
 - **Eirik**: [github.com/eirikm02](https://github.com/eirikm02)
 
 ---
