@@ -8,3 +8,11 @@ type Webhook struct {
 	Event   string `json:"event"`             // Event on which it is invoked
 
 }
+
+// Notification struct for payload for post request to webhook
+type Notification struct {
+	ID      string `json:"id"`
+	Country string `json:"country"`
+	Event   string `json:"event"`
+	Time    string `json:"time"`
+}
