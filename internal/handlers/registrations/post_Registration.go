@@ -2,7 +2,9 @@ package registrations
 
 import (
 	"encoding/json"
+	"github.com/Nahom101-1/assignment-2/internal/constants"
 	"github.com/Nahom101-1/assignment-2/internal/models"
+	"github.com/Nahom101-1/assignment-2/internal/services"
 	"github.com/Nahom101-1/assignment-2/internal/storage"
 	"github.com/Nahom101-1/assignment-2/utils"
 	"log"
@@ -16,9 +18,16 @@ func HandlePostRegistration(w http.ResponseWriter, r *http.Request) {
 	// Decode the JSON request body into the go struct
 	var config models.DashboardConfig
 	if err := json.NewDecoder(r.Body).Decode(&config); err != nil {
-		utils.HandleServiceError(w, err, "(HandlePostRegistration(registration)) Error decoding JSOn", http.StatusInternalServerError)
+		utils.HandleServiceError(w, err, "(HandlePostRegistration) Error decoding JSON", http.StatusBadRequest)
 		return
 	}
+
+	// Validate input
+	if err := utils.ValidateDashboardConfig(config); err != nil {
+		utils.HandleServiceError(w, err, "(HandlePostRegistration) Error validating dashboard", http.StatusBadRequest)
+		return
+	}
+
 	// Generate ID and timestamp
 	id := utils.GenerateID()
 	timestamp := utils.GetTimestamp()
@@ -37,13 +46,15 @@ func HandlePostRegistration(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Trigger REGISTER webhooks
+	services.TriggerWebhooks(w, r, constants.REGISTER, config.Country)
+	log.Printf("Webhooks triggered for event REGISTER and country %s", config.Country)
+
 	// Prepare Response with id and timestamp
 	resp := models.ResponseID{
 		ID:         id,
 		LastChange: timestamp,
 	}
-
-	/*log.Printf("Registration stored: ID=%s LastChange=%s\n", id, timestamp)*/
 
 	// Send the response with HTTP 201 Created and JSON body
 	w.Header().Set("Content-Type", "application/json")
