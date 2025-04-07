@@ -13,13 +13,13 @@ import (
 
 // TODO: change return type
 // GeneralData fetches the capital, population, and area for a given country
-func GeneralData(country string) (capital string, population int32, area float32, err error) {
+func GeneralData(country string) (GeneralData models.GeneralDataResponse, err error) {
 	// Parse base URL
 	baseUrl := constants.RestCountriesAPI + country
 	apiURL, err := url.Parse(baseUrl)
 	if err != nil {
 		log.Printf("Error parsing URL for country %s: %v", country, err)
-		return "", 0, 0, err
+		return models.GeneralDataResponse{}, err
 	}
 
 	// Add query parameters
@@ -30,20 +30,20 @@ func GeneralData(country string) (capital string, population int32, area float32
 	// Send GET request
 	response, err := utils.SendGetRequest(apiURL.String())
 	if err != nil {
-		return "", 0, 0, fmt.Errorf("failed fetching country data from %s: %v", baseUrl, err)
+		return models.GeneralDataResponse{}, fmt.Errorf("failed fetching country data from %s: %v", baseUrl, err)
 	}
 
 	if response.StatusCode != http.StatusOK {
 		log.Printf("Error fetching country data from %s: %s", baseUrl, response.Status)
-		return "", 0, 0, fmt.Errorf("failed fetching country data: %s", response.Status)
+		return models.GeneralDataResponse{}, fmt.Errorf("failed fetching country data: %s", response.Status)
 	}
 
 	// Decode JSON response
 	var countries models.GeneralDataResponse
 	err = json.NewDecoder(response.Body).Decode(&countries)
 	if err != nil {
-		return "", 0, 0, fmt.Errorf("decoding country data failed: %v", err)
+		return models.GeneralDataResponse{}, fmt.Errorf("decoding country data failed: %v", err)
 	}
 
-	return countries.Capital[0], countries.Population, countries.Area, nil
+	return countries, nil
 }
