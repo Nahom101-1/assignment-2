@@ -18,10 +18,12 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		HandleGetWebHook(w, r)
 	case http.MethodDelete:
 		HandleDeleteWebhook(w, r)
+	case http.MethodPatch:
+		HandlePatchWebhook(w, r)
 	default:
 		http.Error(w,
-			fmt.Sprintf(`{"error": "REST Method '%s' not supported. Supported methods: '%s, %s, %s'."}`,
-				r.Method, http.MethodPost, http.MethodGet, http.MethodDelete),
+			fmt.Sprintf(`{"error": "REST Method '%s' not supported. Supported methods: '%s, %s, %s, %s'."}`,
+				r.Method, http.MethodPost, http.MethodGet, http.MethodDelete, http.MethodPatch),
 			http.StatusMethodNotAllowed)
 	}
 }

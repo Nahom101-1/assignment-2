@@ -8,7 +8,7 @@ import (
 
 const Collection = "registrations"
 
-// Handler handles incoming HTTP requests for Country info
+// Handler handles incoming HTTP requests for dashboard endpoint
 func Handler(w http.ResponseWriter, r *http.Request) {
 	log.Println("Received request:", r.Method, r.URL.Path)
 	switch r.Method {

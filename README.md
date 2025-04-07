@@ -71,7 +71,9 @@ assignment-2/
 
 4. Service Status (/dashboard/v1/status/)
 - Monitor availability of external APIs and system health (GET)
- 
-- 
-- 
-- TODO: the inclusion of timezone information in any time representation
+
+
+## Data Source
+
+This project uses weather data provided by [Open-Meteo](https://open-meteo.com/).  
+The data is licensed under [Creative Commons Attribution 4.0 (CC-BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
