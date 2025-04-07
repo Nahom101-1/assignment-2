@@ -26,7 +26,6 @@ func GetCurrencyRates(isoCode string, targetCurrencies []string) (map[string]flo
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
 
 	// Decode JSON response
 	var result models.RatesResponse

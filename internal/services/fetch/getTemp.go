@@ -33,7 +33,6 @@ func GetTemperature(latitude, longitude float32) (temp float32, precipitation fl
 	if err != nil {
 		return 0.0, 0.0, err
 	}
-	defer response.Body.Close()
 
 	// Decode JSON response
 	var result models.WeatherData

@@ -31,7 +31,6 @@ func GetCoordinates(country string) (coord models.Coordinates, iso3 string, err 
 	if err != nil {
 		return models.Coordinates{}, "", err
 	}
-	defer response.Body.Close()
 
 	if response.StatusCode != http.StatusOK {
 		log.Printf("Error fetching country data from %s: %s", baseUrl, response.Status)

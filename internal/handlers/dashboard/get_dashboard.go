@@ -54,7 +54,7 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 
 	//  Fetch Coordinates and ISO3 code
 	// Getting ISO3 code since api already provides it and currency api requires iso3 and not iso2
-	latlon, iso3, err := fetch.GetCoordinates(registration.Country)
+	latlon, currencyCode, err := fetch.GetCoordinates(registration.Country)
 	if err != nil {
 		utils.HandleServiceError(w, err, "Failed to fetch coordinates", http.StatusInternalServerError)
 		return
@@ -99,15 +99,12 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 				dashboard.Features.Area = &GeneralData.Area
 				log.Printf("Area: %f", GeneralData.Area)
 			}
-		} else {
-			utils.HandleServiceError(w, err, "Failed to fetch general data", http.StatusInternalServerError)
-			return
 		}
 	}
 
 	// Fetch Target Currencies if requested on registration
 	if len(registration.Features.TargetCurrencies) > 0 {
-		currencies, err := fetch.GetCurrencyRates(iso3, registration.Features.TargetCurrencies)
+		currencies, err := fetch.GetCurrencyRates(currencyCode, registration.Features.TargetCurrencies)
 		if err == nil {
 			dashboard.Features.TargetCurrencies = currencies
 		} else {
