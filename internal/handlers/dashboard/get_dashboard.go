@@ -85,19 +85,19 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 	// This part checks if at least on of the three features are requested to avoid fetching multiple
 	// times from the same api.
 	if registration.Features.Capital || registration.Features.Population || registration.Features.Area {
-		capital, population, area, err := fetch.GeneralData(registration.Country)
+		GeneralData, err := fetch.GeneralData(registration.Country)
 		if err == nil {
 			if registration.Features.Capital {
-				dashboard.Features.Capital = &capital
-				log.Printf("Capital: %s", capital)
+				dashboard.Features.Capital = &GeneralData.Capital[0]
+				log.Printf("Capital: %s", GeneralData.Capital[0])
 			}
 			if registration.Features.Population {
-				dashboard.Features.Population = &population
-				log.Printf("Population: %d", population)
+				dashboard.Features.Population = &GeneralData.Population
+				log.Printf("Population: %d", GeneralData.Population)
 			}
 			if registration.Features.Area {
-				dashboard.Features.Area = &area
-				log.Printf("Area: %f", area)
+				dashboard.Features.Area = &GeneralData.Area
+				log.Printf("Area: %f", GeneralData.Area)
 			}
 		} else {
 			utils.HandleServiceError(w, err, "Failed to fetch general data", http.StatusInternalServerError)
