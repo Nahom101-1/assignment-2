@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"github.com/Nahom101-1/assignment-2/internal/constants"
 	"github.com/Nahom101-1/assignment-2/internal/models"
-	"github.com/Nahom101-1/assignment-2/internal/services"
+	"github.com/Nahom101-1/assignment-2/internal/services/notifications"
 	"github.com/Nahom101-1/assignment-2/internal/storage"
 	"github.com/Nahom101-1/assignment-2/utils"
 	"log"
@@ -65,7 +65,7 @@ func HandlePatchRegistration(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Trigger CHANGE webhook
-	services.TriggerWebhooks(w, r, constants.CHANGE, existing.Country)
+	notifications.TriggerWebhooks(w, r, constants.CHANGE, existing.Country)
 	log.Printf("Webhooks triggered for event CHANGE and country %s", existing.Country)
 
 	// Respond with JSON
