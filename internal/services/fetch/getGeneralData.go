@@ -11,7 +11,6 @@ import (
 	"net/url"
 )
 
-// TODO: change return type
 // GeneralData fetches the capital, population, and area for a given country
 func GeneralData(country string) (GeneralData models.GeneralDataResponse, err error) {
 	// Parse base URL
