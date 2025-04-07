@@ -3,7 +3,7 @@ package registrations
 import (
 	"github.com/Nahom101-1/assignment-2/internal/constants"
 	"github.com/Nahom101-1/assignment-2/internal/models"
-	"github.com/Nahom101-1/assignment-2/internal/services"
+	"github.com/Nahom101-1/assignment-2/internal/services/notifications"
 	"github.com/Nahom101-1/assignment-2/internal/storage"
 	"github.com/Nahom101-1/assignment-2/utils"
 	"log"
@@ -52,7 +52,7 @@ func HandleDeleteRegistration(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Trigger DELETE webhook
-	services.TriggerWebhooks(w, r, constants.DELETE, temp.Country)
+	notifications.TriggerWebhooks(w, r, constants.DELETE, temp.Country)
 	log.Printf("Webhooks triggered for event DELETE and country %s", temp.Country)
 
 	// Respond with 204 No Content

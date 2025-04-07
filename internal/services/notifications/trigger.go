@@ -1,4 +1,4 @@
-package services
+package notifications
 
 import (
 	"github.com/Nahom101-1/assignment-2/internal/models"

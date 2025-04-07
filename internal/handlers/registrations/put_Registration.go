@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/Nahom101-1/assignment-2/internal/constants"
 	"github.com/Nahom101-1/assignment-2/internal/models"
-	"github.com/Nahom101-1/assignment-2/internal/services"
+	"github.com/Nahom101-1/assignment-2/internal/services/notifications"
 	"github.com/Nahom101-1/assignment-2/internal/storage"
 	"github.com/Nahom101-1/assignment-2/utils"
 	"log"
@@ -68,7 +68,7 @@ func HandlePutRegistration(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Trigger CHANGE webhooks
-	services.TriggerWebhooks(w, r, constants.CHANGE, update.Country)
+	notifications.TriggerWebhooks(w, r, constants.CHANGE, update.Country)
 	log.Printf("Webhooks triggered for event CHANGE and country %s", update.Country)
 
 	// Prepare and send JSON response

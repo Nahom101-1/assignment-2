@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/Nahom101-1/assignment-2/internal/constants"
 	"github.com/Nahom101-1/assignment-2/internal/models"
-	"github.com/Nahom101-1/assignment-2/internal/services"
+	"github.com/Nahom101-1/assignment-2/internal/services/notifications"
 	"github.com/Nahom101-1/assignment-2/internal/storage"
 	"github.com/Nahom101-1/assignment-2/utils"
 	"log"
@@ -47,7 +47,7 @@ func HandlePostRegistration(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Trigger REGISTER webhooks
-	services.TriggerWebhooks(w, r, constants.REGISTER, config.Country)
+	notifications.TriggerWebhooks(w, r, constants.REGISTER, config.Country)
 	log.Printf("Webhooks triggered for event REGISTER and country %s", config.Country)
 
 	// Prepare Response with id and timestamp
