@@ -14,7 +14,7 @@ import (
 // GetCoordinates fetches latitude, longitude, and currency code for a given country
 func GetCoordinates(country string) (coord models.Coordinates, iso3 string, err error) {
 	// Parse base URL
-	baseUrl := constants.RestCountriesAPI + country
+	baseUrl := constants.RestCountriesAPI_2 + country
 	apiURL, err := url.Parse(baseUrl)
 	if err != nil {
 		log.Printf("Error parsing URL for country %s: %v", country, err)
