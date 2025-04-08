@@ -29,6 +29,7 @@ func TestHandler(t *testing.T) {
 		}]`
 		w.Write([]byte(resp))
 	}))
+	defer GetGeneralDataStub.Close()
 
 	GetTemperatureStub := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := `{
@@ -39,7 +40,7 @@ func TestHandler(t *testing.T) {
 		}`
 		w.Write([]byte(resp))
 	}))
-
+	defer GetTemperatureStub.Close()
 	GetCoordinatesStub := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := `{
 		"latlng": [83.1234, 15.1241],
@@ -47,7 +48,7 @@ func TestHandler(t *testing.T) {
 		}`
 		w.Write([]byte(resp))
 	}))
-
+	defer GetCoordinatesStub.Close()
 	GetCurrencyRatesStub := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		resp := `{
 		"rates": {
@@ -56,6 +57,7 @@ func TestHandler(t *testing.T) {
 		}}`
 		w.Write([]byte(resp))
 	}))
+	defer GetCurrencyRatesStub.Close()
 
 	// Save stub and roll back to original api after test
 	originalGetCoordinates := constants.RestCountriesAPI_2
