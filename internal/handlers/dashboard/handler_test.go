@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/Nahom101-1/assignment-2/internal/constants"
-	"github.com/Nahom101-1/assignment-2/internal/handlers/notifications"
 	"github.com/Nahom101-1/assignment-2/internal/models"
 	"github.com/Nahom101-1/assignment-2/internal/storage"
 	"github.com/Nahom101-1/assignment-2/utils"
@@ -119,7 +118,7 @@ func TestHandler(t *testing.T) {
 	Handler(recorder, req)
 
 	defer func() {
-		notifications.HandleDeleteWebhook(recorder, req)
+		//notifications.HandleDeleteWebhook(recorder, req)
 	}()
 
 	if recorder.Code != http.StatusOK {
