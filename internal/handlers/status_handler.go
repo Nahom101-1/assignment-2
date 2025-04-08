@@ -19,11 +19,10 @@ func StatusHandler(w http.ResponseWriter, r *http.Request) {
 		RestCountriesAPI: utils.CheckAPIStatus(restCountriesTest),
 		OpenMeteoAPI:     utils.CheckAPIStatus(openMeteoTest),
 		CurrencyAPI:      utils.CheckAPIStatus(currencyTest),
-		// TODO: fix utils.CheckNotificationDB, utils.GetWebhookCount, utils.GetwebhookCount, utils.checkUptime
-		NotificationDB: 200,
-		Webhooks:       6,
-		Version:        "v1",
-		Uptime:         uptime,
+		NotificationDB:   utils.CheckFirestoreStatus(),
+		Webhooks:         utils.CountWebhooks(),
+		Version:          "v1",
+		Uptime:           uptime,
 	}
 
 	utils.JsonResponse(w, response)
