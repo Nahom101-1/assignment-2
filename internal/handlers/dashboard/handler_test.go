@@ -99,11 +99,6 @@ func TestHandler(t *testing.T) {
 		"features":   test.Features,
 		"lastChange": timestamp,
 	}
-	// Validate input
-	if err := utils.ValidateDashboardConfig(test); err != nil {
-		t.Logf("Error validating dashboard: %v", err)
-		return
-	}
 
 	if _, err := storage.GetClient().Collection("registrations").Doc(testID).Set(ctx, storedData); err != nil {
 		t.Logf("Error storing data: %v", err)
