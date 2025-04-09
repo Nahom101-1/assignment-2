@@ -10,10 +10,9 @@ import (
 	"github.com/Nahom101-1/assignment-2/internal/handlers/registrations"
 	"github.com/Nahom101-1/assignment-2/internal/storage"
 	"github.com/Nahom101-1/assignment-2/utils"
-	"os"
-
 	"log"
 	"net/http"
+	
 )
 
 var ctx = context.Background()

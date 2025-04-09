@@ -101,6 +101,15 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
+	// Fetch GDP  if requested on registration
+	if registration.Features.GDP {
+		gdp, err := fetch.GetGDP(registration.IsoCode)
+		if err != nil {
+			log.Printf("Error fetching GDP data: %v", err)
+		} else {
+			dashboard.Features.GDP = &gdp
+		}
+	}
 
 	// Fetch Target Currencies if requested on registration
 	if len(registration.Features.TargetCurrencies) > 0 {
@@ -119,6 +128,9 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 	//  Trigger INVOKE webhook
 	notifications.TriggerWebhooks(w, r, constants.INVOKE, registration.Country)
 	log.Printf("Webhooks triggered for event INVOKE and country %s", registration.Country)
+	// Trigger DASHBOARD_VIEW webhook
+	notifications.TriggerWebhooks(w, r, constants.DASHBOARD_VIEW, registration.Country)
+	log.Printf("Webhooks triggered for event DASHBOARD_VIEW and country %s", registration.Country)
 
 	// set status, header and Return Populated Dashboard
 	w.Header().Set("Content-Type", "application/json")

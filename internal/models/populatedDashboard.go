@@ -17,6 +17,7 @@ type PopulatedFeatures struct {
 	Population       *int32             `json:"population,omitempty"`
 	Area             *float32           `json:"area,omitempty"`
 	TargetCurrencies map[string]float32 `json:"targetCurrencies,omitempty"`
+	GDP              *float64           `json:"gdp,omitempty"`
 }
 
 // Coordinates struct for lang and long

@@ -75,14 +75,17 @@ assignment-2/
 2. Dashboard Retrieval (/dashboard/v1/dashboards/)
 - Retrieve a populated dashboard (GET)
 
-3. Webhook Notifications (/dashboard/v1/notifications/)
-- Register a webhook (POST)
-- Retrieve a specific webhook (GET)
-- Retrieve all webhooks (GET)
-- Delete a webhook (DELETE)
+### Supported Webhook Events
+- `REGISTER`: Triggered when a new dashboard configuration is registered.
+- `CHANGE`: Triggered when a dashboard configuration is updated.
+- `DELETE`: Triggered when a dashboard configuration is deleted.
+- `INVOKE`: Triggered when a dashboard is retrieved.
+- `DASHBOARD_VIEW`: Triggered when a dashboard is viewed.
+- `STATUS_CHECK`: Triggered when the status endpoint is accessed.
 
 4. Service Status (/dashboard/v1/status/)
 - Monitor availability of external APIs and system health (GET)
+
 
 
 ## Data Source

@@ -9,6 +9,7 @@ type Features struct {
 	Population       bool     `json:"population"`       // Indicates whether population is shown
 	Area             bool     `json:"area"`             // Indicates whether land area size is shown
 	TargetCurrencies []string `json:"targetCurrencies"` // Indicates which exchange rates (to target currencies) relative to the base currency of the registered country (in this case NOK for Norway) are shown
+	GDP              bool     `json:"gdp"`              // Indicates whether GDP is shown
 }
 
 // DashboardConfig represents the configuration a user submits
