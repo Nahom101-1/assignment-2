@@ -102,7 +102,6 @@ func TestHandler(t *testing.T) {
 	if _, err := storage.GetClient().Collection("registrations").Doc(testID).Set(ctx, storedData); err != nil {
 		t.Logf("Error storing data: %v", err)
 	}
-	t.Logf("Starting TestHandler2")
 	defer func() {
 		_, err := storage.GetClient().Collection("registrations").Doc(testID).Delete(ctx)
 		if err != nil {
@@ -116,10 +115,6 @@ func TestHandler(t *testing.T) {
 	recorder := httptest.NewRecorder()
 
 	Handler(recorder, req)
-
-	defer func() {
-		//notifications.HandleDeleteWebhook(recorder, req)
-	}()
 
 	if recorder.Code != http.StatusOK {
 		t.Errorf("Expected status code %d, but got %d", http.StatusOK, recorder.Code)
