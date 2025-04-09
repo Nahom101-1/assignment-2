@@ -47,9 +47,6 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//  Initialize Dashboard
-	var dashboard models.PopulatedDashboard
-
 	// Cache
 	data, err := utils.GetDocIfExists(r.Context(), "cache", id, storage.GetClient())
 	if err != nil {
@@ -58,25 +55,86 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 	}
 	// If cached data for id exists, get data from cache instead of api
 	if data != nil {
-		if err := data.DataTo(&dashboard); err != nil {
+		log.Printf("Cached Data found - Checking if valid"
+		var cachedDashboard models.PopulatedDashboard
+		if err := data.DataTo(&cachedDashboard); err != nil {
 			utils.HandleServiceError(w, err, "Error decoding document", http.StatusInternalServerError)
 			return
 		}
-		log.Printf("Cached data entered")
-		//  Trigger INVOKE webhook
-		notifications.TriggerWebhooks(w, r, constants.INVOKE, registration.Country)
-		log.Printf("Webhooks triggered for event INVOKE and country %s", registration.Country)
-		// Trigger DASHBOARD_VIEW webhook
-		notifications.TriggerWebhooks(w, r, constants.DASHBOARD_VIEW, registration.Country)
-		log.Printf("Webhooks triggered for event DASHBOARD_VIEW and country %s", registration.Country)
+		// Check if the features in registration match the cached dashboard
+		featuresChanged := false
 
-		// set status, header and Return Populated Dashboard
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(dashboard)
-		return
+		// Check boolean features
+		if (registration.Features.Temperature && cachedDashboard.Features.Temperature == nil) ||
+			(registration.Features.Precipitation && cachedDashboard.Features.Precipitation == nil) ||
+			(registration.Features.Capital && cachedDashboard.Features.Capital == nil) ||
+			(registration.Features.Coordinates && cachedDashboard.Features.Coordinates == nil) ||
+			(registration.Features.Population && cachedDashboard.Features.Population == nil) ||
+			(registration.Features.Area && cachedDashboard.Features.Area == nil) ||
+			(registration.Features.GDP && cachedDashboard.Features.GDP == nil) {
+			featuresChanged = true
+		}
+		// Check if all requested currencies are in the cached dashboard
+		if len(registration.Features.TargetCurrencies) > 0 {
+			if cachedDashboard.Features.TargetCurrencies == nil {
+				featuresChanged = true
+			} else {
+				for _, currency := range registration.Features.TargetCurrencies {
+					if _, exists := cachedDashboard.Features.TargetCurrencies[currency]; !exists {
+						featuresChanged = true
+						break
+					}
+				}
+			}
+		}
+		var dashboard models.PopulatedDashboard
+		if registration.Features.Coordinates {
+			dashboard.Features.Coordinates = cachedDashboard.Features.Coordinates
+		}
+		if registration.Features.Area {
+			dashboard.Features.Area = cachedDashboard.Features.Area
+		}
+		if registration.Features.GDP {
+			dashboard.Features.GDP = cachedDashboard.Features.GDP
+		}
+		if registration.Features.Temperature {
+			dashboard.Features.Temperature = cachedDashboard.Features.Temperature
+		}
+		if registration.Features.Capital {
+			dashboard.Features.Capital = cachedDashboard.Features.Capital
+		}
+		if registration.Features.Population {
+			dashboard.Features.Population = cachedDashboard.Features.Population
+		}
+		if registration.Features.Precipitation {
+			dashboard.Features.Precipitation = cachedDashboard.Features.Precipitation
+		}
+		if registration.Features.TargetCurrencies != nil {
+			dashboard.Features.TargetCurrencies = cachedDashboard.Features.TargetCurrencies
+		}
+		dashboard.Country = cachedDashboard.Country
+		dashboard.IsoCode = cachedDashboard.IsoCode
+		dashboard.LastRetrieval = cachedDashboard.LastRetrieval
+		if !featuresChanged {
+			log.Printf("Cached Data is valid - Skipping fetching from api")
+			//  Trigger INVOKE webhook
+			notifications.TriggerWebhooks(w, r, constants.INVOKE, registration.Country)
+			log.Printf("Webhooks triggered for event INVOKE and country %s", registration.Country)
+			// Trigger DASHBOARD_VIEW webhook
+			notifications.TriggerWebhooks(w, r, constants.DASHBOARD_VIEW, registration.Country)
+			log.Printf("Webhooks triggered for event DASHBOARD_VIEW and country %s", registration.Country)
+
+			// set status, header and Return Populated Dashboard
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
+			json.NewEncoder(w).Encode(dashboard)
+			return
+		}
+		log.Printf("Cache invalid, features has been changed - Procceding with fetch from api")
 	}
-	log.Printf("Cached data not entered")
+
+	//  Initialize Dashboard
+	var dashboard models.PopulatedDashboard
 	dashboard.Country = registration.Country
 	dashboard.IsoCode = registration.IsoCode
 
@@ -114,7 +172,11 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 	// times from the same api.
 	if registration.Features.Capital || registration.Features.Population || registration.Features.Area {
 		GeneralData, err := fetch.GeneralData(registration.Country)
+		if err != nil {
+			log.Printf("error generaldata %d", err)
+		}
 		if err == nil {
+			log.Printf("GeneralData response: %+v", GeneralData)
 			if registration.Features.Capital {
 				dashboard.Features.Capital = &GeneralData.Capital[0]
 				log.Printf("Capital: %s", GeneralData.Capital[0])
