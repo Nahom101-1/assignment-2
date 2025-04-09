@@ -15,6 +15,7 @@ import (
 
 var TestDataId = ""
 
+// Tests Post Method
 func TestHandlePostRegistration(t *testing.T) {
 	// TODO: Dette funker ikke hvis det ikke er tim som kjører lol || FIKS CREDENTIALS SOM EN ENV
 	storage.InitFirestore(context.Background(), "C:\\Users\\Tim\\GolandProjects\\assignment-2\\config\\firebase.json")
@@ -53,6 +54,7 @@ func TestHandlePostRegistration(t *testing.T) {
 
 }
 
+// Tests Get Method
 func TestHandleGetRegistration(t *testing.T) {
 	// Test getting a specific registration
 	t.Run("Get specific registration", func(t *testing.T) {
@@ -80,6 +82,7 @@ func TestHandleGetRegistration(t *testing.T) {
 	})
 }
 
+// Tests Head Method
 func TestHandleHeadRegistrations(t *testing.T) {
 	req, err := http.NewRequest(http.MethodHead, constants.RegistrationsEndpoint+TestDataId, nil)
 	if err != nil {
@@ -92,6 +95,7 @@ func TestHandleHeadRegistrations(t *testing.T) {
 	}
 }
 
+// Tests Put Method
 func TestHandlePutRegistration(t *testing.T) {
 	test := models.DashboardConfig{
 		Country: "Testland",
@@ -120,6 +124,7 @@ func TestHandlePutRegistration(t *testing.T) {
 	}
 }
 
+// Tests Patch Method
 func TestHandlePatchRegistration(t *testing.T) {
 	patchData := `{"features":{"Area":false}}`
 	req, err := http.NewRequest(http.MethodPatch, constants.RegistrationsEndpoint+TestDataId, strings.NewReader(patchData))
@@ -134,6 +139,7 @@ func TestHandlePatchRegistration(t *testing.T) {
 	}
 }
 
+// Tests Delete method
 func TestHandleDeleteRegistration(t *testing.T) {
 	req, err := http.NewRequest(http.MethodDelete, constants.RegistrationsEndpoint+TestDataId, nil)
 	if err != nil {
@@ -143,5 +149,18 @@ func TestHandleDeleteRegistration(t *testing.T) {
 	Handler(recorder, req)
 	if recorder.Code != http.StatusNoContent {
 		t.Errorf("Expected status code %d, but got %d", http.StatusNoContent, recorder.Code)
+	}
+}
+
+// Tests a method that is not implemented
+func TestHandleOptionsRegistrations(t *testing.T) {
+	req, err := http.NewRequest(http.MethodOptions, constants.RegistrationsEndpoint, nil)
+	if err != nil {
+		t.Fatalf("Error creating request: %v", err)
+	}
+	recorder := httptest.NewRecorder()
+	Handler(recorder, req)
+	if recorder.Code != http.StatusMethodNotAllowed {
+		t.Errorf("Expected status code %d, but got %d", http.StatusMethodNotAllowed, recorder.Code)
 	}
 }
