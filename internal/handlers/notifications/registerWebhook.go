@@ -2,6 +2,7 @@ package notifications
 
 import (
 	"encoding/json"
+	"github.com/Nahom101-1/assignment-2/internal/constants"
 	"github.com/Nahom101-1/assignment-2/internal/models"
 	"github.com/Nahom101-1/assignment-2/internal/storage"
 	"github.com/Nahom101-1/assignment-2/utils"
@@ -21,8 +22,13 @@ func HandleRegisterWebhook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Validate webhook registration
-	if hook.URL == "" || (hook.Event != "REGISTER" && hook.Event != "CHANGE" && hook.Event != "DELETE" && hook.Event != "INVOKE") {
-		http.Error(w, "(RegisterWebhook) Error: invalid URL or Event ", http.StatusBadRequest)
+	if hook.URL == "" || (hook.Event != constants.REGISTER &&
+		hook.Event != constants.CHANGE &&
+		hook.Event != constants.DELETE &&
+		hook.Event != constants.INVOKE &&
+		hook.Event != constants.DASHBOARD_VIEW &&
+		hook.Event != constants.STATUS_CHECK) {
+		http.Error(w, "(RegisterWebhook) Error: invalid URL or Event", http.StatusBadRequest)
 		return
 	}
 
