@@ -3,6 +3,11 @@ FROM golang:1.23 AS builder
 # Set working directory inside container
 WORKDIR /go/src/app
 
+# Copy config file
+
+COPY config/firebase.json /go/src/app/config/firestore.json
+# Set environment variable for Firebase credentials
+ENV FIREBASE_KEY_PATH=/go/src/app/config/firestore.json
 # Copy files
 COPY . .
 
