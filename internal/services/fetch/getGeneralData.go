@@ -36,13 +36,17 @@ func GeneralData(country string) (GeneralData models.GeneralDataResponse, err er
 		log.Printf("Error fetching country data from %s: %s", baseUrl, response.Status)
 		return models.GeneralDataResponse{}, fmt.Errorf("failed fetching country data: %s", response.Status)
 	}
-
-	// Decode JSON response
-	var countries models.GeneralDataResponse
+	var countries []models.GeneralDataResponse // Expecting an array
 	err = json.NewDecoder(response.Body).Decode(&countries)
 	if err != nil {
 		return models.GeneralDataResponse{}, fmt.Errorf("decoding country data failed: %v", err)
 	}
 
-	return countries, nil
+	// Ensure the array is not empty
+	if len(countries) == 0 {
+		return models.GeneralDataResponse{}, fmt.Errorf("no data found for country %s", country)
+	}
+
+	// Return the first element of the array
+	return countries[0], nil
 }
