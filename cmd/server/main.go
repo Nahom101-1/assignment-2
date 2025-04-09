@@ -29,6 +29,8 @@ func main() {
 	storage.InitFirestore(ctx, path)
 	defer storage.CloseClient()
 
+	utils.DeleteOutdatedCache()
+
 	http.HandleFunc(constants.BasePath, handlers.LocalHandler)
 	http.HandleFunc(constants.RegistrationsEndpoint, registrations.Handler)
 	http.HandleFunc(constants.DashboardsEndpoint, dashboard.Handler)
