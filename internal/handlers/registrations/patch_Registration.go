@@ -47,6 +47,7 @@ func HandlePatchRegistration(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Decode incoming updates
+	// TODO: Dette funker ikke? blir lagt til som fks: area: true istedet for Area: true
 	var updates map[string]interface{}
 	if err := json.NewDecoder(r.Body).Decode(&updates); err != nil {
 		utils.HandleServiceError(w, err, "Error decoding partial update", http.StatusBadRequest)
