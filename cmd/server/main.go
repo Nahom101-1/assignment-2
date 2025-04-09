@@ -26,7 +26,7 @@ func main() {
 		log.Fatal("FIREBASE_KEY_PATH environment variable is not set")
 	}
 
-	storage.InitFirestore(ctx, "config/firebase.json")
+	storage.InitFirestore(ctx, path)
 	defer storage.CloseClient()
 
 	http.HandleFunc(constants.BasePath, handlers.LocalHandler)

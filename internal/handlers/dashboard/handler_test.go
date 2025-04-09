@@ -7,8 +7,10 @@ import (
 	"github.com/Nahom101-1/assignment-2/internal/models"
 	"github.com/Nahom101-1/assignment-2/internal/storage"
 	"github.com/Nahom101-1/assignment-2/utils"
+	"log"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 )
 
@@ -75,8 +77,12 @@ func TestHandler(t *testing.T) {
 
 	testID := "testID_123"
 
-	// TODO: Dette funker ikke hvis det ikke er tim som kjører lol
-	storage.InitFirestore(ctx, "C:\\Users\\Tim\\GolandProjects\\assignment-2\\config\\firebase.json")
+	path := os.Getenv("FIREBASE_KEY_PATH")
+	if path == "" {
+		log.Fatal("FIREBASE_KEY_PATH environment variable is not set")
+	}
+
+	storage.InitFirestore(ctx, path)
 
 	test := models.DashboardConfig{
 		Country: "Testland",

@@ -7,8 +7,10 @@ import (
 	"github.com/Nahom101-1/assignment-2/internal/constants"
 	"github.com/Nahom101-1/assignment-2/internal/models"
 	"github.com/Nahom101-1/assignment-2/internal/storage"
+	"log"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 )
@@ -16,8 +18,12 @@ import (
 var TestDataId = ""
 
 func TestHandleRegisterWebhook(t *testing.T) {
-	// TODO dette vil ikke fungere hvis man ikke er Tim, implementer env for deployment
-	storage.InitFirestore(context.Background(), "C:\\Users\\Tim\\GolandProjects\\assignment-2\\config\\firebase.json")
+	path := os.Getenv("FIREBASE_KEY_PATH")
+	if path == "" {
+		log.Fatal("FIREBASE_KEY_PATH environment variable is not set")
+	}
+
+	storage.InitFirestore(context.Background(), path)
 	testWebHook := models.Webhook{
 		URL:     "http://test.example.com/",
 		Country: "Testland",

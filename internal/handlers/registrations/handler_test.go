@@ -7,8 +7,10 @@ import (
 	"github.com/Nahom101-1/assignment-2/internal/constants"
 	"github.com/Nahom101-1/assignment-2/internal/models"
 	"github.com/Nahom101-1/assignment-2/internal/storage"
+	"log"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
 	"testing"
 )
@@ -17,8 +19,12 @@ var TestDataId = ""
 
 // Tests Post Method
 func TestHandlePostRegistration(t *testing.T) {
-	// TODO: Dette funker ikke hvis det ikke er tim som kjører lol || FIKS CREDENTIALS SOM EN ENV
-	storage.InitFirestore(context.Background(), "C:\\Users\\Tim\\GolandProjects\\assignment-2\\config\\firebase.json")
+	path := os.Getenv("FIREBASE_KEY_PATH")
+	if path == "" {
+		log.Fatal("FIREBASE_KEY_PATH environment variable is not set")
+	}
+
+	storage.InitFirestore(context.Background(), path)
 	test := models.DashboardConfig{
 		Country: "Testland",
 		IsoCode: "NO",
