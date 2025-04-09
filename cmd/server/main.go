@@ -10,6 +10,7 @@ import (
 	"github.com/Nahom101-1/assignment-2/internal/handlers/registrations"
 	"github.com/Nahom101-1/assignment-2/internal/storage"
 	"github.com/Nahom101-1/assignment-2/utils"
+	"os"
 
 	"log"
 	"net/http"
@@ -20,6 +21,11 @@ var port string
 
 func main() {
 	port = utils.GetPort()
+
+	path := os.Getenv("FIREBASE_KEY_PATH")
+	if path == "" {
+		log.Fatal("FIREBASE_KEY_PATH environment variable is not set")
+	}
 
 	storage.InitFirestore(ctx, "config/firebase.json")
 	defer storage.CloseClient()
