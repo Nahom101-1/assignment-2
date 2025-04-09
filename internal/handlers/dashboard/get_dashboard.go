@@ -55,13 +55,13 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 	}
 	// If cached data for id exists, get data from cache instead of api
 	if data != nil {
-		log.Printf("Cached Data found - Checking if valid"
+		log.Printf("Cached Data found - Checking if valid")
 		var cachedDashboard models.PopulatedDashboard
 		if err := data.DataTo(&cachedDashboard); err != nil {
 			utils.HandleServiceError(w, err, "Error decoding document", http.StatusInternalServerError)
 			return
 		}
-		// Check if the features in registration match the cached dashboard
+		// Check if the features in registration match the cached dashboard or cached data is outdated
 		featuresChanged := false
 
 		// Check boolean features
@@ -130,7 +130,7 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(dashboard)
 			return
 		}
-		log.Printf("Cache invalid, features has been changed - Procceding with fetch from api")
+		log.Printf("Cache invalid, features has been changed or cached data is outdated - Procceding with fetch from api")
 	}
 
 	//  Initialize Dashboard
