@@ -49,6 +49,34 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 
 	//  Initialize Dashboard
 	var dashboard models.PopulatedDashboard
+
+	// Cache
+	data, err := utils.GetDocIfExists(r.Context(), "cache", id, storage.GetClient())
+	if err != nil {
+		utils.HandleServiceError(w, err, "Error retrieving document", http.StatusInternalServerError)
+		return
+	}
+	// If cached data for id exists, get data from cache instead of api
+	if data != nil {
+		if err := data.DataTo(&dashboard); err != nil {
+			utils.HandleServiceError(w, err, "Error decoding document", http.StatusInternalServerError)
+			return
+		}
+		log.Printf("Cached data entered")
+		//  Trigger INVOKE webhook
+		notifications.TriggerWebhooks(w, r, constants.INVOKE, registration.Country)
+		log.Printf("Webhooks triggered for event INVOKE and country %s", registration.Country)
+		// Trigger DASHBOARD_VIEW webhook
+		notifications.TriggerWebhooks(w, r, constants.DASHBOARD_VIEW, registration.Country)
+		log.Printf("Webhooks triggered for event DASHBOARD_VIEW and country %s", registration.Country)
+
+		// set status, header and Return Populated Dashboard
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(dashboard)
+		return
+	}
+	log.Printf("Cached data not entered")
 	dashboard.Country = registration.Country
 	dashboard.IsoCode = registration.IsoCode
 
@@ -124,6 +152,12 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 
 	// Set Last Retrieval Timestamp
 	dashboard.LastRetrieval = utils.GetTimestamp()
+
+	// Store the data in the Firestore "cache" collection using the generated ID
+	if _, err := storage.GetClient().Collection("cache").Doc(id).Set(r.Context(), dashboard); err != nil {
+		utils.HandleServiceError(w, err, "Error storing registration in Firestore", http.StatusInternalServerError)
+		return
+	}
 
 	//  Trigger INVOKE webhook
 	notifications.TriggerWebhooks(w, r, constants.INVOKE, registration.Country)
