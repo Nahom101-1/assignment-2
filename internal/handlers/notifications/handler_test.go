@@ -16,6 +16,7 @@ import (
 var TestDataId = ""
 
 func TestHandleRegisterWebhook(t *testing.T) {
+	// TODO dette vil ikke fungere hvis man ikke er Tim, implementer env for deployment
 	storage.InitFirestore(context.Background(), "C:\\Users\\Tim\\GolandProjects\\assignment-2\\config\\firebase.json")
 	testWebHook := models.Webhook{
 		URL:     "http://test.example.com/",
