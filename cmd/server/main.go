@@ -22,7 +22,7 @@ func main() {
 	port = utils.GetPort()
 
 	storage.InitFirestore(ctx, "config/firebase.json")
-	/*defer storage.CloseClient()*/
+	defer storage.CloseClient()
 
 	http.HandleFunc(constants.BasePath, handlers.LocalHandler)
 	http.HandleFunc(constants.RegistrationsEndpoint, registrations.Handler)

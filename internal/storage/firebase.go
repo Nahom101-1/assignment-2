@@ -33,10 +33,10 @@ func GetClient() *firestore.Client {
 	return client
 }
 
-/*// CloseClient close the client when server shuts down
+// CloseClient close the client when server shuts down
 func CloseClient() {
 	if client != nil {
 		_ = client.Close()
+		log.Println("Closed Firestore")
 	}
 }
-*/

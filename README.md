@@ -10,28 +10,40 @@
 ---
 
 ## 📁 Project Structure
- initial setup of our Go project. Below is an overview of the current folder structure:
-
+ Below is an overview of the current folder structure:
 ```
 assignment-2/
-│── internal/              # Core logic
-│   ├── handlers/          # API route handlers
-│   ├── models/            # Data/struct models
-│   ├── services/          # logic endpoints, getcities, getpopulation etc..
-│── tests/                 # Unit tests
-│── config/
-├   ├── firebase.json
-│── utils/                 # Utility functions
-│   ├── check_status.go    # Status check utility
-│   ├── get_request.go     # Helper for GET requests
-│   ├── handle_ServiceError.go # Error handling utilities
-│   ├── post_request.go    # Helper for POST requests
-│   ├── read_body.go       # Reads request bodies
-│   ├── server_port.go     # Handles server port configuration
-│   ├── response.go        # Handles writing to the browser
-│── go.mod                 # Go module dependencies
-│── main.go                # Entry point of the application
-│── README.md              # Project documentation
+│
+├── cmd/                     # Entry point of the app
+│   └── server/
+│       └── main.go
+│
+├── config/                  # Configuration files
+│
+├── internal/                # Core application logic
+│   ├── constants/           # API constants, events, URLs
+│   ├── handlers/            # API route handlers
+│   │   ├── dashboard/
+│   │   ├── notifications/
+│   │   └── registrations/
+│   ├── models/              # Data/struct models
+│   ├── services/            # other logic
+│   │   ├── fetch/
+│   │   └── notifications/
+│   ├── storage/             # Storage logic
+│   │   └── firebase.go
+│   └── utils/               # Utility helper functions
+│
+├── static/                  # Static files (html, css, etc)
+│   └── index.html
+│
+├── tests/                   # Extra test files
+│
+├── .github/                 # GitHub Actions workflows
+│   └── workflows/
+│       └── gitlab-sync.yml
+│
+├── Dockerfile               # Docker configuration
 ```
 
 

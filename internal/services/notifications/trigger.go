@@ -9,6 +9,7 @@ import (
 	"net/http"
 )
 
+// TriggerWebhooks Sender post request to specified webhook given event and country match
 func TriggerWebhooks(w http.ResponseWriter, r *http.Request, event string, country string) {
 	log.Printf("Triggering webhooks for event %s", event)
 
@@ -33,7 +34,7 @@ func TriggerWebhooks(w http.ResponseWriter, r *http.Request, event string, count
 			continue
 		}
 
-		// Check if webhook matches event and country
+		// Check if webhook matches event or country
 		if temp.Event == event {
 			if temp.Country == "" || temp.Country == country {
 				// Construct payload with correct data
