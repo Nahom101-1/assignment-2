@@ -1,6 +1,5 @@
 **/*.iml
 **/.idea
-**/*.json
 **/.git
 **/.secrets
 **/vendor

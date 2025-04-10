@@ -20,12 +20,11 @@ var port string
 
 func main() {
 	port = utils.GetPort()
-
 	path := os.Getenv("FIREBASE_KEY_PATH")
+	fmt.Printf("key path : %s", path)
 	if path == "" {
 		log.Fatal("FIREBASE_KEY_PATH environment variable is not set")
 	}
-
 	storage.InitFirestore(ctx, path)
 	defer storage.CloseClient()
 

@@ -2,12 +2,10 @@ FROM golang:1.23 AS builder
 
 # Set working directory inside container
 WORKDIR /go/src/app
-
 # Copy config file
 
-COPY config/firebase.json /go/src/app/config/firestore.json
+COPY config/firebase.json /secrets/firebase.json
 # Set environment variable for Firebase credentials
-ENV FIREBASE_KEY_PATH=/go/src/app/config/firestore.json
 # Copy files
 COPY . .
 
@@ -17,7 +15,7 @@ WORKDIR /go/src/app/cmd/server
 # Build the Go app
 RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o server
 
-
+ENV FIREBASE_KEY_PATH=/secrets/firebase.json
 # Expose port
 EXPOSE 8080
 
