@@ -152,7 +152,6 @@ curl http://10.212.175.52:80/dashboard/v1/status/
 - **Webhook Management**: Full webhook lifecycle - Register, Retrieve, Update, Delete.
 - **Timestamp Handling**: Consistent `lastChange` timestamp updates on all operations.
 - **Purging of Cached Information**: Implemented cache purging for outdated requests older than a configured threshold.
-- **Clean Document Updates**: PATCH operations fully clean documents without leaving outdated fields.
 
 
 
