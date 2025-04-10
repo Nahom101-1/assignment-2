@@ -11,8 +11,8 @@ import (
 )
 
 var startTime = time.Now()
-var restCountriesTest = constants.RestCountriesAPI + "name/norway"
-var openMeteoTest = constants.OpenMeteoAPI + "forecast?latitude=52.52&longitude=13.41"
+var restCountriesTest = constants.RestCountriesAPI + "norway"
+var openMeteoTest = constants.OpenMeteoAPI + "?latitude=52.52&longitude=13.41"
 var currencyTest = constants.CurrencyAPI + "nok"
 
 func StatusHandler(w http.ResponseWriter, r *http.Request) {
