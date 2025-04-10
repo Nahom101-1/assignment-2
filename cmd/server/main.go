@@ -30,7 +30,7 @@ func main() {
 
 	utils.DeleteOutdatedCache()
 
-	http.HandleFunc(constants.BasePath, handlers.LocalHandler)
+	http.HandleFunc(constants.BasePath, handlers.BasePathHandler)
 	http.HandleFunc(constants.RegistrationsEndpoint, registrations.Handler)
 	http.HandleFunc(constants.DashboardsEndpoint, dashboard.Handler)
 	http.HandleFunc(constants.NotificationsEndpoint, notifications.Handler)
