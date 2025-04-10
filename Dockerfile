@@ -16,6 +16,7 @@ WORKDIR /go/src/app/cmd/server
 RUN CGO_ENABLED=0 GOOS=linux go build -a -ldflags '-extldflags "-static"' -o server
 
 ENV FIREBASE_KEY_PATH=/secrets/firebase.json
+ENV GOOGLE_CLOUD_PROJECT=dashboard-api-92dd0
 # Expose port
 EXPOSE 8080
 
