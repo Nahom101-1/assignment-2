@@ -1,7 +1,6 @@
 package registrations
 
 import (
-	"cloud.google.com/go/firestore"
 	"encoding/json"
 	"github.com/Nahom101-1/assignment-2/internal/constants"
 	"github.com/Nahom101-1/assignment-2/internal/models"
@@ -39,29 +38,68 @@ func HandlePatchRegistration(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Decode the existing document to get country
-	var existing models.DashboardConfig
+	// Decode the existing full document
+	var existing models.DashboardConfigWithMeta
 	if err := doc.DataTo(&existing); err != nil {
 		utils.HandleServiceError(w, err, "Error decoding existing document", http.StatusInternalServerError)
 		return
 	}
 
-	// Decode incoming updates
-	// TODO: Dette funker ikke? blir lagt til som fks: area: true istedet for Area: true
+	// Decode incoming partial updates
 	var updates map[string]interface{}
 	if err := json.NewDecoder(r.Body).Decode(&updates); err != nil {
 		utils.HandleServiceError(w, err, "Error decoding partial update", http.StatusBadRequest)
 		return
 	}
 
-	// Add timestamp
-	timestamp := utils.GetTimestamp()
-	updates["lastChange"] = timestamp
+	// Apply updates manually
+	if country, ok := updates["country"].(string); ok {
+		existing.Country = country
+	}
+	if isoCode, ok := updates["isoCode"].(string); ok {
+		existing.IsoCode = isoCode
+	}
+	if featuresUpdate, ok := updates["features"].(map[string]interface{}); ok {
+		if val, ok := featuresUpdate["temperature"].(bool); ok {
+			existing.Features.Temperature = val
+		}
+		if val, ok := featuresUpdate["precipitation"].(bool); ok {
+			existing.Features.Precipitation = val
+		}
+		if val, ok := featuresUpdate["capital"].(bool); ok {
+			existing.Features.Capital = val
+		}
+		if val, ok := featuresUpdate["coordinates"].(bool); ok {
+			existing.Features.Coordinates = val
+		}
+		if val, ok := featuresUpdate["population"].(bool); ok {
+			existing.Features.Population = val
+		}
+		if val, ok := featuresUpdate["area"].(bool); ok {
+			existing.Features.Area = val
+		}
+		if val, ok := featuresUpdate["gdp"].(bool); ok {
+			existing.Features.GDP = val
+		}
+		if val, ok := featuresUpdate["targetCurrencies"].([]interface{}); ok {
+			targetCurrencies := []string{}
+			for _, currency := range val {
+				if currencyStr, ok := currency.(string); ok {
+					targetCurrencies = append(targetCurrencies, currencyStr)
+				}
+			}
+			existing.Features.TargetCurrencies = targetCurrencies
+		}
+	}
 
-	// Apply patch
-	_, err = storage.GetClient().Collection(Collection).Doc(id).Set(r.Context(), updates, firestore.MergeAll)
+	// Update timestamp
+	timestamp := utils.GetTimestamp()
+	existing.LastChange = timestamp
+
+	// Save the updated full document (overwrite cleanly)
+	_, err = storage.GetClient().Collection(Collection).Doc(id).Set(r.Context(), existing)
 	if err != nil {
-		utils.HandleServiceError(w, err, "Error applying partial update", http.StatusInternalServerError)
+		utils.HandleServiceError(w, err, "Error saving patched document", http.StatusInternalServerError)
 		return
 	}
 
