@@ -173,21 +173,17 @@ func HandleGetDashboard(w http.ResponseWriter, r *http.Request) {
 	if registration.Features.Capital || registration.Features.Population || registration.Features.Area {
 		GeneralData, err := fetch.GeneralData(registration.Country)
 		if err != nil {
-			log.Printf("error generaldata %d", err)
+			log.Printf("Error fetching data %d", err)
 		}
 		if err == nil {
-			log.Printf("GeneralData response: %+v", GeneralData)
 			if registration.Features.Capital {
 				dashboard.Features.Capital = &GeneralData.Capital[0]
-				log.Printf("Capital: %s", GeneralData.Capital[0])
 			}
 			if registration.Features.Population {
 				dashboard.Features.Population = &GeneralData.Population
-				log.Printf("Population: %d", GeneralData.Population)
 			}
 			if registration.Features.Area {
 				dashboard.Features.Area = &GeneralData.Area
-				log.Printf("Area: %f", GeneralData.Area)
 			}
 		}
 	}
