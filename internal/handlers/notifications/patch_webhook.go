@@ -1,11 +1,9 @@
 package notifications
 
 import (
-	"cloud.google.com/go/firestore"
 	"encoding/json"
 	"github.com/Nahom101-1/assignment-2/internal/constants"
 	"github.com/Nahom101-1/assignment-2/internal/models"
-	"github.com/Nahom101-1/assignment-2/internal/services/notifications"
 	"github.com/Nahom101-1/assignment-2/internal/storage"
 	"github.com/Nahom101-1/assignment-2/utils"
 	"log"
@@ -13,8 +11,9 @@ import (
 	"strings"
 )
 
+// HandlePatchWebhook applies a partial update to a webhook document by ID.
 func HandlePatchWebhook(w http.ResponseWriter, r *http.Request) {
-	log.Printf("PATCH /registrations received: %s %s\n", r.Method, r.URL.Path)
+	log.Printf("PATCH /notifications received: %s %s\n", r.Method, r.URL.Path)
 
 	// Extract ID
 	path := strings.TrimPrefix(r.URL.Path, constants.NotificationsEndpoint)
@@ -23,25 +22,25 @@ func HandlePatchWebhook(w http.ResponseWriter, r *http.Request) {
 
 	// Validate ID
 	if id == "" {
-		http.Error(w, `{"error": "Missing registration ID in URL"}`, http.StatusBadRequest)
+		http.Error(w, `{"error": "Missing webhook ID in URL"}`, http.StatusBadRequest)
 		return
 	}
 
 	// Check if document exists
 	doc, err := utils.GetDocIfExists(r.Context(), Collection, id, storage.GetClient())
 	if err != nil {
-		utils.HandleServiceError(w, err, "Error retrieving document", http.StatusInternalServerError)
+		utils.HandleServiceError(w, err, "Error retrieving webhook document", http.StatusInternalServerError)
 		return
 	}
 	if doc == nil {
-		http.Error(w, `{"error": "Registration not found"}`, http.StatusNotFound)
+		http.Error(w, `{"error": "Webhook not found"}`, http.StatusNotFound)
 		return
 	}
 
-	// Decode the existing document to get country
+	// Decode the existing document
 	var existing models.Webhook
 	if err := doc.DataTo(&existing); err != nil {
-		utils.HandleServiceError(w, err, "Error decoding existing document", http.StatusInternalServerError)
+		utils.HandleServiceError(w, err, "Error decoding existing webhook", http.StatusInternalServerError)
 		return
 	}
 
@@ -52,25 +51,28 @@ func HandlePatchWebhook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Add timestamp
-	timestamp := utils.GetTimestamp()
-	updates["lastChange"] = timestamp
+	// Apply incoming updates manually
+	if url, ok := updates["url"].(string); ok {
+		existing.URL = url
+	}
+	if country, ok := updates["country"].(string); ok {
+		existing.Country = country
+	}
+	if event, ok := updates["event"].(string); ok {
+		existing.Event = event
+	}
 
-	// Apply patch
-	_, err = storage.GetClient().Collection(Collection).Doc(id).Set(r.Context(), updates, firestore.MergeAll)
+	// Save the full updated webhook object (overwrite cleanly)
+	_, err = storage.GetClient().Collection(Collection).Doc(id).Set(r.Context(), existing)
 	if err != nil {
-		utils.HandleServiceError(w, err, "Error applying partial update", http.StatusInternalServerError)
+		utils.HandleServiceError(w, err, "Error saving patched webhook", http.StatusInternalServerError)
 		return
 	}
 
-	// Trigger CHANGE webhook
-	notifications.TriggerWebhooks(w, r, constants.CHANGE, existing.Country)
-	log.Printf("Webhooks triggered for event CHANGE and country %s", existing.Country)
-
-	// Respond with JSON
+	// Respond
 	resp := models.ResponseID{
 		ID:         id,
-		LastChange: timestamp,
+		LastChange: utils.GetTimestamp(), // Optional: if you want to return updated time
 	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
